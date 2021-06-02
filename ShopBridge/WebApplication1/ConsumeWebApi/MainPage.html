@@ -1,0 +1,394 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link href="BStyle/bootstrap.css" rel="stylesheet" />
+    <link rel="icon" href="data:;base64,=">
+
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/respond.min.js"></script>
+    <script src="Scripts/jquery.validate.js"></script>
+    <script src="Scripts/jquery.validate.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getproduct();
+            $('#btnsave').click(postProduct);
+            $('#btnDelete').click(deleteproduct);
+            $('#btnUpdate').click(updateproduct);
+
+           
+            $('#btnsave').click(function (e) {
+                var isValid = true;
+                $('#txtname,#txtdescription').each(function () {
+                    if ($.trim($(this).val()) == '') {
+                        isValid = false;
+                        $(this).css({
+                            "border": "1px solid red",
+                            "background": "#FFCECE"
+                        });
+                    }
+                    else {
+                        $(this).css({
+                            "border": "",
+                            "background": ""
+                        });
+                    }
+                });
+                if (isValid == false)
+                    e.preventDefault();
+
+            });
+
+         
+            $('#btnDelete').click(function (e) {
+                var isValid = true;
+                $('#txtproductId').each(function () {
+                    if ($.trim($(this).val()) == '') {
+                        isValid = false;
+                        $(this).css({
+                            "border": "1px solid red",
+                            "background": "#FFCECE"
+                        });
+                    }
+                    else {
+                        $(this).css({
+                            "border": "",
+                            "background": ""
+                        });
+                    }
+                });
+                if (isValid == false)
+                    e.preventDefault();
+
+            });
+
+     
+            $('#btnUpdate').click(function (e) {
+                var isValid = true;
+                $('#ProductId,#txtName,#description').each(function () {
+                    if ($.trim($(this).val()) == '') {
+                        isValid = false;
+                        $(this).css({
+                            "border": "1px solid red",
+                            "background": "#FFCECE"
+                        });
+                    }
+                    else {
+                        $(this).css({
+                            "border": "",
+                            "background": ""
+                        });
+                    }
+                });
+                if (isValid == false)
+                    e.preventDefault();
+
+            });
+
+          
+            $('#txtname').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+                    return true;
+                }
+                else {
+                    e.preventDefault();
+
+                    //$('.error').show();
+                    //$('.error').text('Please Enter Alphabet');
+                    return false;
+                }
+            });
+            $('#txtproductId').keypress(function (e) {
+                var regex = new RegExp("^[0-9]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+                    return true;
+                }
+                else {
+                    e.preventDefault();
+
+                    //$('.error').show();
+                    //$('.error').text('Please Enter Alphabet');
+                    return false;
+                }
+            });
+            $('#ProductId').keypress(function (e) {
+                var regex = new RegExp("^[0-9]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+                    return true;
+                }
+                else {
+                    e.preventDefault();
+
+                    //$('.error').show();
+                    //$('.error').text('Please Enter Alphabet');
+                    return false;
+                }
+            });
+            $('#txtdescription').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+                    return true;
+                }
+                else {
+                    e.preventDefault();
+
+                    //$('.error').show();
+                    //$('.error').text('Please Enter Alphabet');
+                    return false;
+                }
+            });
+            $('#txtName').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+                    return true;
+                }
+                else {
+                    e.preventDefault();
+
+                    //$('.error').show();
+                    //$('.error').text('Please Enter Alphabet');
+                    return false;
+                }
+            });
+            $('#description').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+                    return true;
+                }
+                else {
+                    e.preventDefault();
+
+                    //$('.error').show();
+                    //$('.error').text('Please Enter Alphabet');
+                    return false;
+                }
+            });
+        });
+
+        function refreshPage() {
+            location.reload(true);
+        }
+
+       
+        function getproduct() {
+            $("tbl tbody").html("");
+            $.ajax({
+                type: 'Get',
+                url: 'http://localhost:57291/api/product',
+                datatype: 'json',
+                success: function (data) {
+                    var tblproduct = $('#tbl tbody')
+                    tblproduct.empty();
+                    $.each(data, function (index, val) {
+                        tblproduct.append('<tr><td>' + val.ID + '</td><td>' + val.NAME + '</td><td>'
+                     + val.DESCRIPTION + '</td></tr>');
+
+                    });
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+      
+        function deleteproduct() {
+            var id = document.getElementById("txtproductId").value;
+            $.ajax({
+                url: 'http://localhost:57291/api/product' + "/" + id,
+                type: "delete",
+                contentType: "application/json",
+                success: function (data) {
+                    setInterval('refreshPage()', 5000);
+                    console.log(data);
+
+                }
+            });
+            getproduct();
+        }
+
+       
+        function updateproduct() {
+            var id = document.getElementById("ProductId").value;
+            var name = document.getElementById("txtName").value;
+            var description = document.getElementById("description").value;
+            $.ajax({
+                url: 'http://localhost:57291/api/product' + "/" + id,
+                type: "PUT",
+                datatype: 'Json',
+                data: {
+                    'ID': id,
+                    'NAME': name,
+                    'DESCRIPTION': description
+                },
+                success: function (data) {
+                    setInterval('refreshPage()', 5000);
+                    console.log(data);
+
+                }
+            });
+            getproduct();
+
+        }
+
+    
+        function postProduct() {
+           
+            var name = document.getElementById("txtname").value;
+            var description = document.getElementById("txtdescription").value;
+            $.ajax({
+                type: 'Post',
+                url: 'http://localhost:57291/api/product',
+                datatype: 'json',
+                data: {
+                    'NAME': name,
+                    'DESCRIPTION': description
+                },
+                success: function (data) {
+                    setInterval('refreshPage()', 5000);
+
+                    console.log(data);
+                }
+            });
+            getproduct();
+        }
+
+    </script>
+</head>
+<body>
+
+   
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Shop Bridge</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10">
+                <h3 style="background-color:lightblue" class="text-center: text-muted">Add Information </h3>
+
+                <form class="border border-secondary">
+                    <div class="form-row">
+                        <div class="form-group col-lg-6">
+                            <label for="txtname">Name</label>
+
+                            <input type="text" class="form-control" id="txtname" title="Accept Character Only" placeholder="Product Name">
+                            <p class="error"></p>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="txtdescription">Description</label>
+                            <input type="text" class="form-control" id="txtdescription" title="Accept Character Only" placeholder="Description">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-3">
+                            <button type="submit" id="btnsave" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10">
+                <h3 style="background-color:lightblue" class="text-center: text-muted">Delete Information </h3>
+                <form id="formdelete" class="border border-secondary">
+                    <div class="form-row">
+                        <div class="form-group col-lg-6">
+                            <label for="txtproductId">Product ID</label>
+                            <input type="text" class="form-control" id="txtproductId" title="Accepts No. only" placeholder="Product ID">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-3">
+                            <button type="button" id="btnDelete" class="btn btn-primary">Delete</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h3 style="background-color:lightblue" class="text-center: text-muted">Update Information </h3>
+    </div>
+    <form>
+        <div class="form-row">
+            <div class="form-group col-lg-10">
+                <label for="ProductId">Product ID</label>
+                <input type="text" class="form-control" id="ProductId" title="Accepts No. only" placeholder="Product ID">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-10">
+                <label for="txtName">Name</label>
+                <input type="text" class="form-control" id="txtName" title="Accept Character Only" placeholder="Name">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-10">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description" title="Accept Character Only" placeholder="Description">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-3">
+                <button type="button" id="btnUpdate" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </form>
+
+        <table class="table" id="tbl">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Product ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+   
+   
+     <div class="bg-dark">
+        <footer class="page-footer font-small purple pt-4 fixed-bottom">
+
+         
+            <div class="container-fluid text-center text-md-left">
+
+                <div class="footer-copyright text-center py-3">
+                    © 2021 Copyright:
+                    <a href=""> Shop Bridge</a>
+                </div>
+            </div>
+           
+        </footer>
+    </div>
+   
+</body>
+</html>
+

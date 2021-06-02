@@ -1,0 +1,10 @@
+C:\Program Files\Project\WebApplication1\ClassLibrary1\bin\Debug\ClassLibrary1.dll.config
+C:\Program Files\Project\WebApplication1\ClassLibrary1\bin\Debug\ClassLibrary1.dll
+C:\Program Files\Project\WebApplication1\ClassLibrary1\bin\Debug\ClassLibrary1.pdb
+C:\Program Files\Project\WebApplication1\ClassLibrary1\bin\Debug\EntityFramework.dll
+C:\Program Files\Project\WebApplication1\ClassLibrary1\bin\Debug\EntityFramework.SqlServer.dll
+C:\Program Files\Project\WebApplication1\ClassLibrary1\bin\Debug\EntityFramework.xml
+C:\Program Files\Project\WebApplication1\ClassLibrary1\bin\Debug\EntityFramework.SqlServer.xml
+C:\Program Files\Project\WebApplication1\ClassLibrary1\obj\Debug\ClassLibrary1.csprojResolveAssemblyReference.cache
+C:\Program Files\Project\WebApplication1\ClassLibrary1\obj\Debug\ClassLibrary1.dll
+C:\Program Files\Project\WebApplication1\ClassLibrary1\obj\Debug\ClassLibrary1.pdb
